@@ -22,15 +22,13 @@ function createGitHubPagesFiles() {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page Not Found</title>
+  <title>Therapeutic AI Assistant - Page Not Found</title>
   <script>
     // Single Page Apps for GitHub Pages
     // MIT License
     // https://github.com/rafgraph/spa-github-pages
     // This script takes the current URL and converts the path and query string into just a query string,
     // and then redirects the browser to the new URL with only a query string.
-    // If you're creating a Project Pages site and NOT using a custom domain,
-    // then set pathSegmentsToKeep to 1 (enterprise users may need to set it to > 1).
     var pathSegmentsToKeep = 1;
 
     var l = window.location;
@@ -82,8 +80,14 @@ function createGitHubPagesFiles() {
 
     // Insert script right before the closing </head> tag
     indexHtml = indexHtml.replace('</head>', scriptToAdd + '</head>');
+    
+    // Ensure base path is set for GitHub Pages
+    if (!indexHtml.includes('<base href=')) {
+      indexHtml = indexHtml.replace('<head>', '<head>\n  <base href="./" />');
+    }
+    
     fs.writeFileSync(indexPath, indexHtml);
-    console.log('Updated index.html with GitHub Pages SPA routing script');
+    console.log('Updated index.html with GitHub Pages SPA routing script and base href');
   } else {
     console.log('index.html already has GitHub Pages SPA routing script');
   }
@@ -91,8 +95,67 @@ function createGitHubPagesFiles() {
   // Create .nojekyll file to prevent GitHub Pages from using Jekyll
   fs.writeFileSync(path.join(publicDir, '.nojekyll'), '');
   console.log('Created .nojekyll file to disable Jekyll processing');
-
+  
+  // Fix asset paths in HTML and CSS files to use relative paths
+  fixAssetPaths(publicDir);
+  
+  // Ensure Face API and other scripts are included
+  includeExternalScripts(indexPath);
+  
   console.log('GitHub Pages files created successfully in dist/public');
+}
+
+// Helper function to fix asset paths in built files
+function fixAssetPaths(directory) {
+  // Process all HTML and CSS files
+  const processFiles = (dir) => {
+    const files = fs.readdirSync(dir);
+    
+    for (const file of files) {
+      const filePath = path.join(dir, file);
+      const stat = fs.statSync(filePath);
+      
+      if (stat.isDirectory()) {
+        // Recursively process subdirectories
+        processFiles(filePath);
+      } else if (file.endsWith('.html') || file.endsWith('.css') || file.endsWith('.js')) {
+        // Fix paths in HTML, CSS, and JS files
+        let content = fs.readFileSync(filePath, 'utf8');
+        
+        // Convert absolute paths to relative paths
+        // This is a simplistic approach - in a real app you might need more sophisticated regex
+        content = content.replace(/src="\//g, 'src="./');
+        content = content.replace(/href="\//g, 'href="./');
+        content = content.replace(/url\(\//g, 'url(./');
+        
+        // Save the updated content
+        fs.writeFileSync(filePath, content);
+      }
+    }
+  };
+  
+  processFiles(directory);
+  console.log('Fixed asset paths to use relative URLs');
+}
+
+// Helper function to include external scripts
+function includeExternalScripts(indexPath) {
+  let indexHtml = fs.readFileSync(indexPath, 'utf8');
+  
+  // Add Face API script if not already present
+  if (!indexHtml.includes('face-api.js')) {
+    indexHtml = indexHtml.replace('</head>', 
+      '  <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>\n</head>');
+  }
+  
+  // Add Puter.js script if not already present
+  if (!indexHtml.includes('puter.com')) {
+    indexHtml = indexHtml.replace('</head>', 
+      '  <script src="https://js.puter.com/v2/"></script>\n</head>');
+  }
+  
+  fs.writeFileSync(indexPath, indexHtml);
+  console.log('Added external scripts to index.html');
 }
 
 // Run the function to create GitHub Pages files

@@ -50,7 +50,9 @@ http://localhost:5000
 
 ## Deployment
 
-This project is configured for deployment to GitHub Pages. See [GITHUB_PAGES.md](./GITHUB_PAGES.md) for detailed deployment instructions.
+This project is configured for deployment to GitHub Pages. When deployed, the **full interactive application** will be available on your GitHub Pages URL, not just this README.
+
+For detailed deployment instructions, see [GITHUB_PAGES.md](./GITHUB_PAGES.md).
 
 ## Project Structure
 

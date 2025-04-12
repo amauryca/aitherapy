@@ -1,64 +1,71 @@
-// set-github-vars.js
-// This script sets up environment variables for local GitHub Pages testing
-
-import { writeFileSync, existsSync } from 'fs';
-import { execSync } from 'child_process';
+// This script sets important environment variables for GitHub Pages deployment
+import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
 
-// Get the repository name from git remote if available
+// Get the directory name
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 function getRepoName() {
   try {
-    // Try to get the GitHub repository URL from git config
+    // Try to get the repository name from Git
     const remoteUrl = execSync('git config --get remote.origin.url').toString().trim();
     
-    // Extract the repository name from the URL
     if (remoteUrl) {
-      // Handle different URL formats
-      let repoName;
+      // Extract repo name from git URL
+      // Format could be: https://github.com/username/repo.git or git@github.com:username/repo.git
+      let repoName = '';
       
       if (remoteUrl.includes('github.com')) {
-        // HTTPS URL: https://github.com/username/repo.git
-        // SSH URL: git@github.com:username/repo.git
-        const urlParts = remoteUrl.split(/[/:]/);
-        repoName = urlParts[urlParts.length - 1].replace('.git', '');
+        if (remoteUrl.includes(':')) {
+          // SSH format
+          repoName = remoteUrl.split(':')[1].split('.git')[0].split('/').pop();
+        } else {
+          // HTTPS format
+          repoName = remoteUrl.split('/').pop().replace('.git', '');
+        }
+        
+        return repoName;
       }
-      
-      return repoName || 'my-github-pages-repo';
     }
   } catch (error) {
-    console.log('Could not get repository name from git config');
+    console.warn('Could not get repository name from Git:', error.message);
   }
   
-  return 'my-github-pages-repo';
+  // Fallback: use the current directory name
+  return path.basename(__dirname);
 }
 
-// Create .env.local file with GitHub Pages variables
 function createEnvFile() {
   const repoName = getRepoName();
+  console.log(`Repository name detected: ${repoName}`);
   
-  const envContent = `# GitHub Pages environment variables
-GITHUB_ACTIONS=true
-GITHUB_REPOSITORY=username/${repoName}
-# Uncomment and adjust below if you know your GitHub username
-# GITHUB_REPOSITORY=yourusername/${repoName}
+  // Create .env file with GitHub Pages specific variables
+  const envContent = `# GitHub Pages configuration
+# This file is generated automatically by set-github-vars.js
+# Do not edit manually
+
+# The base path for GitHub Pages deployment
+VITE_BASE_PATH="/${repoName}/"
+
+# The repository name (used for constructing GitHub Pages URLs)
+VITE_REPO_NAME="${repoName}"
+
+# Enable GitHub Pages compatibility mode
+VITE_GITHUB_PAGES="true"
 `;
 
-  try {
-    writeFileSync('.env.local', envContent);
-    console.log('Created .env.local with GitHub Pages variables');
-    console.log(`Repository name set to: ${repoName}`);
-    console.log('');
-    console.log('To use your actual GitHub username:');
-    console.log('1. Edit .env.local');
-    console.log('2. Update GITHUB_REPOSITORY with your actual username');
-    console.log('');
-  } catch (error) {
-    console.error('Error creating .env.local file:', error);
-  }
+  fs.writeFileSync(path.join(__dirname, '.env'), envContent);
+  console.log('.env file created with GitHub Pages variables');
+  
+  // Also write a .env.production file that will be used during the build
+  fs.writeFileSync(path.join(__dirname, '.env.production'), envContent);
+  console.log('.env.production file created with GitHub Pages variables');
+  
+  console.log('\nGitHub Pages environment variables are now set.');
+  console.log('You can now build your application for GitHub Pages deployment.');
 }
 
-// Main execution
-console.log('Setting up environment for GitHub Pages local testing...');
+// Run the function to create the environment file
 createEnvFile();
-console.log('Done! You can now test GitHub Pages deployment locally.');
-console.log('Run: npm run build');

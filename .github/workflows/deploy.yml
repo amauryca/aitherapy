@@ -33,8 +33,14 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+      - name: Add robots.txt to prevent indexing during development
+        run: |
+          echo "User-agent: *" > ./dist/public/robots.txt
+          echo "Allow: /" >> ./dist/public/robots.txt
       - name: Create GitHub Pages files
         run: node github-pages.js
+      - name: Create .nojekyll file
+        run: touch ./dist/public/.nojekyll
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
