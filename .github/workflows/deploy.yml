@@ -41,6 +41,13 @@ jobs:
         run: node github-pages.js
       - name: Create .nojekyll file
         run: touch ./dist/public/.nojekyll
+      - name: Ensure index.html is the default
+        run: |
+          # Create a placeholder _config.yml to override GitHub Pages settings
+          echo 'theme: ""' > ./dist/public/_config.yml
+          # Make sure README.md is not there to avoid it being rendered instead of index.html
+          if [ -f ./dist/public/README.md ]; then rm ./dist/public/README.md; fi
+          if [ -f ./dist/public/readme.md ]; then rm ./dist/public/readme.md; fi
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact

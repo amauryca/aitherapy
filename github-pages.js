@@ -96,6 +96,25 @@ function createGitHubPagesFiles() {
   fs.writeFileSync(path.join(publicDir, '.nojekyll'), '');
   console.log('Created .nojekyll file to disable Jekyll processing');
   
+  // Create _config.yml to ensure proper rendering
+  const configYml = 'theme: ""';
+  fs.writeFileSync(path.join(publicDir, '_config.yml'), configYml);
+  console.log('Created _config.yml to ensure index.html is used as the default page');
+  
+  // Remove any README.md files to prevent them from taking precedence over index.html
+  const readmePath = path.join(publicDir, 'README.md');
+  const readmePathLower = path.join(publicDir, 'readme.md');
+  
+  if (fs.existsSync(readmePath)) {
+    fs.unlinkSync(readmePath);
+    console.log('Removed README.md to ensure index.html is used as the default page');
+  }
+  
+  if (fs.existsSync(readmePathLower)) {
+    fs.unlinkSync(readmePathLower);
+    console.log('Removed readme.md to ensure index.html is used as the default page');
+  }
+  
   // Fix asset paths in HTML and CSS files to use relative paths
   fixAssetPaths(publicDir);
   

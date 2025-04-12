@@ -10,6 +10,15 @@ GitHub Pages allows you to host static websites directly from a GitHub repositor
 2. GitHub Actions workflow for automated deployments
 3. Client-side only operation for static hosting
 
+## Important Note: Displaying the Application (Not the README)
+
+This project is configured to ensure that GitHub Pages displays the actual Therapeutic AI application (index.html) instead of the README.md file. This is accomplished through several mechanisms:
+
+1. A `.nojekyll` file to disable Jekyll processing
+2. A `_config.yml` file to override GitHub Pages defaults
+3. Removal of any README.md files from the deployed directory
+4. Proper SPA routing for client-side navigation
+
 ## Setup Instructions
 
 ### 1. Create a GitHub Repository
@@ -86,6 +95,17 @@ If the page loads but is blank:
 1. Open browser developer tools to check for JavaScript errors
 2. Ensure all paths in the built files are relative, not absolute
 3. Check if any API calls are failing due to CORS restrictions
+
+### README.md is Displayed Instead of the Application
+
+If GitHub Pages is showing the README.md instead of your application:
+
+1. Verify that the GitHub Actions workflow completed successfully
+2. Ensure your repository has the following files in the deployed directory:
+   - `.nojekyll` file to disable Jekyll processing
+   - `_config.yml` with empty theme setting
+   - No README.md or readme.md files in the deployed directory
+3. Try adding an empty file named `.nojekyll` at the root of the `gh-pages` branch
 
 ## Limitations on GitHub Pages
 

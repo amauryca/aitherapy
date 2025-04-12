@@ -47,6 +47,24 @@ async function buildForGitHubPages() {
     fs.writeFileSync(path.join(publicDir, '.nojekyll'), '');
     console.log('Created .nojekyll file to disable Jekyll processing');
     
+    // 4. Create _config.yml to ensure index.html is the default
+    fs.writeFileSync(path.join(publicDir, '_config.yml'), 'theme: ""');
+    console.log('Created _config.yml to ensure index.html is the default page');
+    
+    // 5. Remove any README files that might take precedence
+    const readmePath = path.join(publicDir, 'README.md');
+    const readmePathLower = path.join(publicDir, 'readme.md');
+    
+    if (fs.existsSync(readmePath)) {
+      fs.unlinkSync(readmePath);
+      console.log('Removed README.md to ensure index.html is the default page');
+    }
+    
+    if (fs.existsSync(readmePathLower)) {
+      fs.unlinkSync(readmePathLower);
+      console.log('Removed readme.md to ensure index.html is the default page');
+    }
+    
     // 4. Create CNAME file if needed (for custom domain)
     // fs.writeFileSync(path.join(publicDir, 'CNAME'), 'your-custom-domain.com');
     // console.log('Created CNAME file for custom domain');
