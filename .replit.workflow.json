@@ -1,0 +1,10 @@
+{
+  "workflows": {
+    "Start application": {
+      "command": "npm run dev",
+      "restartOn": {
+        "files": ["server/**", "client/**", "shared/**"]
+      }
+    }
+  }
+}

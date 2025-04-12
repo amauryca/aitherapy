@@ -1,2 +1,4 @@
 #!/bin/bash
-npx tsx server/index.ts
+# start-app.sh
+echo "Starting the therapeutic AI application..."
+npm run dev
