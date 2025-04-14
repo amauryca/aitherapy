@@ -12,6 +12,7 @@ import AboutPage from "@/pages/AboutPage";
 import ModulesPage from "@/pages/ModulesPage";
 import NavBar from "@/components/layout/NavBar";
 import Footer from "@/components/layout/Footer";
+import PageFavicon from "@/components/PageFavicon";
 import { loadFaceApiScript } from "@/lib/faceApiLoader";
 
 // Handle GitHub Pages SPA routing
