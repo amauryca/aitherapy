@@ -1,10 +1,11 @@
 {
-  "workflows": {
+  "runs": {
     "Start application": {
       "command": "npm run dev",
-      "restartOn": {
-        "files": ["server/**", "client/**", "shared/**"]
-      }
+      "public": true,
+      "web": true,
+      "restart": true,
+      "restartable": true
     }
   }
 }

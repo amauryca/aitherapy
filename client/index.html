@@ -3,24 +3,39 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#4F46E5" />
+    <meta name="description" content="A therapeutic AI assistant for mental wellness through text and voice therapy with emotion analysis capabilities" />
+    
+    <!-- SEO Meta Tags -->
+    <meta name="keywords" content="therapy, AI assistant, mental health, voice therapy, text therapy, emotional support" />
+    <meta name="author" content="Therapeutic AI Assistant" />
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Therapeutic AI Assistant" />
+    <meta property="og:description" content="Interactive AI therapy assistant with voice, text, and emotion analysis capabilities" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="/favicon.svg" as="image" type="image/svg+xml" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
     <title>Therapeutic AI Assistant</title>
-    <!-- Start Single Page Apps for GitHub Pages -->
-    <script type="text/javascript">
-      // Single Page Apps for GitHub Pages
-      // MIT License
-      // https://github.com/rafgraph/spa-github-pages
-      (function(l) {
-        if (l.search[1] === '/' ) {
-          var decoded = l.search.slice(1).split('&').map(function(s) { 
-            return s.replace(/~and~/g, '&')
-          }).join('?');
-          window.history.replaceState(null, null,
-              l.pathname.slice(0, -1) + decoded + l.hash
-          );
+    
+    <!-- Glitch.com specific -->
+    <script>
+      // Handle client-side routing for Glitch.com
+      (function() {
+        // For Glitch.com SPA routing
+        if (typeof window !== 'undefined') {
+          window.addEventListener('popstate', function() {
+            // Re-render the app when the user presses back/forward
+            window.location.reload();
+          });
         }
-      }(window.location))
+      })();
     </script>
-    <!-- End Single Page Apps for GitHub Pages -->
   </head>
   <body>
     <div id="root"></div>

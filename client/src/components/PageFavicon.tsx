@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'wouter';
-import { getPageTheme } from '@/lib/theme';
+import { getAssetPath } from '@/lib/assetHelper';
 
 /**
  * PageFavicon Component
@@ -10,53 +10,93 @@ export default function PageFavicon() {
   const [location] = useLocation();
   
   useEffect(() => {
-    // Get current page from location path
-    const path = location.split('/')[1] || 'home';
-    let favicon = '/favicon.svg'; // Default favicon
+    // Extract the page name from the URL
+    const currentPage = location.split('/')[1] || 'home';
     
-    // Set appropriate favicon based on current path
-    switch(path) {
-      case 'text':
-        favicon = '/favicon-text.svg';
-        break;
-      case 'voice':
-        favicon = '/favicon-voice.svg';
-        break;
-      case 'modules':
-        favicon = '/favicon-modules.svg';
-        break;
-      case 'stats':
-        favicon = '/favicon-stats.svg';
-        break;
-      case 'about':
-        favicon = '/favicon-about.svg';
-        break;
-      default:
-        favicon = '/favicon.svg'; // Home or any other page
-    }
+    // Update favicon based on current page
+    updateFavicon(currentPage);
     
-    // Update page title based on current path with proper formatting
-    let pageTitle = 'Therapeutic AI';
-    if (path !== 'home') {
-      const formattedPath = path.charAt(0).toUpperCase() + path.slice(1);
-      pageTitle = `${formattedPath} | Therapeutic AI`;
-    }
-    
-    // Update document title
-    document.title = pageTitle;
-    
-    // Update favicon link element
-    const linkElement = document.querySelector("link[rel='icon']") as HTMLLinkElement;
-    if (linkElement) {
-      linkElement.href = favicon;
-    } else {
-      // Create new favicon link if it doesn't exist
+    // Clean up when component unmounts
+    return () => {
+      // Reset to default favicon when component unmounts
+      resetFavicon();
+    };
+  }, [location]);
+  
+  // Function to update favicon based on current page
+  const updateFavicon = (pageName: string) => {
+    const link = document.querySelector('link[rel="icon"]') as HTMLLinkElement;
+    if (!link) {
+      // If favicon link doesn't exist, create it
       const newLink = document.createElement('link');
       newLink.rel = 'icon';
-      newLink.href = favicon;
+      newLink.type = 'image/svg+xml';
       document.head.appendChild(newLink);
+      updateFavicon(pageName); // Call recursively once created
+      return;
     }
-  }, [location]);
+    
+    // Set the appropriate favicon based on page
+    switch (pageName) {
+      case 'text':
+        link.href = getAssetPath('/favicon-text.svg');
+        break;
+      case 'voice':
+        link.href = getAssetPath('/favicon-voice.svg');
+        break;
+      case 'stats':
+        link.href = getAssetPath('/favicon-stats.svg');
+        break;
+      case 'modules':
+        link.href = getAssetPath('/favicon-modules.svg');
+        break;
+      case 'about':
+        link.href = getAssetPath('/favicon-about.svg');
+        break;
+      default:
+        link.href = getAssetPath('/favicon.svg'); // Default favicon
+    }
+    
+    // Update the page title as well
+    updatePageTitle(pageName);
+  };
+  
+  // Reset favicon to default
+  const resetFavicon = () => {
+    const link = document.querySelector('link[rel="icon"]') as HTMLLinkElement;
+    if (link) {
+      link.href = getAssetPath('/favicon.svg');
+    }
+    document.title = 'Therapeutic AI Assistant';
+  };
+  
+  // Update page title based on current page
+  const updatePageTitle = (pageName: string) => {
+    const baseTitle = 'Therapeutic AI Assistant';
+    let pageTitle = '';
+    
+    switch (pageName) {
+      case 'text':
+        pageTitle = 'Text Therapy';
+        break;
+      case 'voice':
+        pageTitle = 'Voice Therapy';
+        break;
+      case 'stats':
+        pageTitle = 'Therapy Stats';
+        break;
+      case 'modules':
+        pageTitle = 'Therapy Modules';
+        break;
+      case 'about':
+        pageTitle = 'About';
+        break;
+      default:
+        pageTitle = 'Home';
+    }
+    
+    document.title = `${pageTitle} | ${baseTitle}`;
+  };
   
   // This component doesn't render anything visible
   return null;

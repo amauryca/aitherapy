@@ -1,7 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44"/>
-  <path d="M5.5 2a2.5 2.5 0 0 0-2.04 3.94"/>
-  <path d="M20 13.5V10l-7.5-1"/>
-  <path d="M15.29 12.69a2.5 2.5 0 0 1 0 3.5"/>
-  <path d="M18.39 17.66A7.33 7.33 0 0 0 20 13.5"/>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="32" height="32" rx="8" fill="url(#paint0_linear)" />
+  <path d="M24 13.5C24 17.0899 21.0899 20 17.5 20H16V22C16 22.5523 15.5523 23 15 23C14.4477 23 14 22.5523 14 22V20H13.5C9.91015 20 7 17.0899 7 13.5C7 9.91015 9.91015 7 13.5 7H17.5C21.0899 7 24 9.91015 24 13.5Z" fill="white" />
+  <path d="M14.5 12C14.5 12.8284 13.8284 13.5 13 13.5C12.1716 13.5 11.5 12.8284 11.5 12C11.5 11.1716 12.1716 10.5 13 10.5C13.8284 10.5 14.5 11.1716 14.5 12Z" fill="#333" />
+  <path d="M19.5 12C19.5 12.8284 18.8284 13.5 18 13.5C17.1716 13.5 16.5 12.8284 16.5 12C16.5 11.1716 17.1716 10.5 18 10.5C18.8284 10.5 19.5 11.1716 19.5 12Z" fill="#333" />
+  <path d="M15 16.5C15.8284 16.5 16.5 15.8284 16.5 15C16.5 14.1716 15.8284 13.5 15 13.5C14.1716 13.5 13.5 14.1716 13.5 15C13.5 15.8284 14.1716 16.5 15 16.5Z" fill="#333" />
+  <defs>
+    <linearGradient id="paint0_linear" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4F46E5" />
+      <stop offset="1" stop-color="#7C3AED" />
+    </linearGradient>
+  </defs>
 </svg>

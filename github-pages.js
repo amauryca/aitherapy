@@ -29,7 +29,8 @@ function createGitHubPagesFiles() {
     // https://github.com/rafgraph/spa-github-pages
     // This script takes the current URL and converts the path and query string into just a query string,
     // and then redirects the browser to the new URL with only a query string.
-    var pathSegmentsToKeep = 1;
+    // For amauryca.github.io/Emotional-Therapy, we need to keep 2 segments (username and repo name)
+    var pathSegmentsToKeep = 2;
 
     var l = window.location;
     l.replace(
@@ -75,6 +76,12 @@ function createGitHubPagesFiles() {
         );
       }
     }(window.location))
+    
+    // Set a global variable for the Emotional-Therapy repository path
+    window.REPO_PATH = '/Emotional-Therapy';
+    
+    // Add a meta tag for the repository path
+    document.head.innerHTML += '<meta name="github-repo" content="Emotional-Therapy">';
   </script>
   <!-- End Single Page Apps for GitHub Pages -->\n`;
 
@@ -97,7 +104,9 @@ function createGitHubPagesFiles() {
   console.log('Created .nojekyll file to disable Jekyll processing');
   
   // Create _config.yml to ensure proper rendering
-  const configYml = 'theme: ""';
+  const configYml = `theme: ""
+baseurl: "/Emotional-Therapy"
+repository: "amauryca/Emotional-Therapy"`;
   fs.writeFileSync(path.join(publicDir, '_config.yml'), configYml);
   console.log('Created _config.yml to ensure index.html is used as the default page');
   

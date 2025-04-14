@@ -1,0 +1,12 @@
+{
+  "install": "npm install && npm run build",
+  "start": "node server/glitch-server.js",
+  "watch": {
+    "throttle": 1000,
+    "ignore": [
+      "**/.git",
+      "**/node_modules",
+      "dist/**"
+    ]
+  }
+}
